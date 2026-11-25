@@ -1,0 +1,143 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  :root {
+    --terminal-canvas: #f8fafc;
+    --terminal-panel: #ffffff;
+    --terminal-subpanel: #f1f5f9;
+    --terminal-border: #e2e8f0;
+    --terminal-text: #0f172a;
+    --terminal-muted: #475569;
+  }
+
+  .dark {
+    --terminal-canvas: #090d16;
+    --terminal-panel: #111827;
+    --terminal-subpanel: #0d1320;
+    --terminal-border: #1e293b;
+    --terminal-text: #f1f5f9;
+    --terminal-muted: #94a3b8;
+  }
+
+  html {
+    background-color: var(--terminal-canvas);
+    color: var(--terminal-text);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  .num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Smooth GPU-composited global market ticker marquee */
+@keyframes ticker-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: ticker-scroll 48s linear infinite;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* Institutional research scanning sweep (GPU compositor-only transform) */
+@keyframes research-scan {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  100% {
+    transform: translate3d(200%, 0, 0);
+  }
+}
+
+.research-scan-bar {
+  will-change: transform;
+  animation: research-scan 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Subtle terminal grid texture */
+.terminal-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Respect both OS reduced motion preference and user toggle */
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .research-scan-bar {
+    animation: none !important;
+  }
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-reduced-motion="true"] .ticker-track,
+html[data-reduced-motion="true"] .research-scan-bar {
+  animation: none !important;
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+}
+
+/* Refined scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--terminal-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Clean print / Save-as-PDF layout for Institutional Research Reports */
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .print-break-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

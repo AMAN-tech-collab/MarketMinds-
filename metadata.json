@@ -1,0 +1,6 @@
+{
+  "name": "DalalPulse AI — NSE & BSE Stock Intelligence",
+  "description": "AI-powered Indian stock market intelligence platform for NSE and BSE equities featuring live market data, technical indicators, ML forecasting, portfolio management, risk analytics, and financial news sentiment.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
